@@ -1,3 +1,8 @@
+//==========================================
+//// Title:  cWeather
+//// Author: Jose Baez
+//// Date:   14 Jan 2014
+////=========================================
 #include <stdio.h>
 #include <curl/curl.h>
 #include <string.h>
