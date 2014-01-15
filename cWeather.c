@@ -45,16 +45,19 @@ size_t createJSON(void *ptr, size_t size, size_t nmemb, void *stream)
 		printf("Couldn't get Weather Information\n");
 	}
 }
-static void getJSON()
+static void getJSON(char* zip)
 {
 	CURL *curl;
 	char* response = NULL;
+	char link[] = "http://query.yahooapis.com/v1/public/yql?q=select%20item%20from%20weather.forecast%20where%20location%3D%22";
+	strcat(link, zip);
+	strcat(link, "%22&format=json");
 	curl_global_init(CURL_GLOBAL_DEFAULT);
 	curl = curl_easy_init();
 	if(curl) 
 	{
 		
-		curl_easy_setopt(curl, CURLOPT_URL, "http://query.yahooapis.com/v1/public/yql?q=select%20item%20from%20weather.forecast%20where%20location%3D%2207646%22&format=json");
+		curl_easy_setopt(curl, CURLOPT_URL, link);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, createJSON);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
@@ -62,8 +65,15 @@ static void getJSON()
 		curl_easy_cleanup(curl);
 	}
 }
-int main(void)
+int main(int argc, char *argv[])
 {
-	getJSON();
+	if(argc != 2)
+	{
+		printf("Please enter a Zip Code\n");
+	}
+	else
+	{
+		getJSON(argv[1]);
+	}
 	return 0;
 }
